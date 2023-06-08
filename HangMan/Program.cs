@@ -4,7 +4,7 @@ class Program
 {
     public static void Main(string[] args)
     {
-        string[] words = { "Dog", "Mouse", "Horse", "Elephant" };
+        string[] words = { "rhino", "mouse", "horse", "elephant", "giraffe" };
 
 
         while (true)
@@ -12,7 +12,7 @@ class Program
             int tries = 3;
 
             Random rnd = new Random();
-            int random = rnd.Next(0, 4);
+            int random = rnd.Next(0, 5);
             string word = words[random];
 
             var parts = word.ToCharArray();
@@ -28,6 +28,10 @@ class Program
             Console.WriteLine("Try to guess the word!\n");
 
             int position = rnd.Next(0, word.Length);
+            int position2 = rnd.Next(0, word.Length);
+
+            if (position2 == position)
+                position2++;
 
             for (int i = 0; i < word.Length; i++)
             {
@@ -35,7 +39,12 @@ class Program
                 {
                     empty[i] = word[i];
                 }
+                if(i == position2)
+                {
+                    empty[i] = word[i];
+                }
             }
+
 
             foreach (var x in empty)
             {
@@ -59,6 +68,7 @@ class Program
                         empty[i] = word[i];
                         isGuessed = true;
                     }
+
                 }
 
                 if (isGuessed)
