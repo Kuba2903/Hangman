@@ -35,6 +35,17 @@ namespace WpfApp1
 
         char[] empty;
 
+        private Brush buttonBackground = Brushes.Green;
+
+        public Brush ButtonBackground
+        {
+            get { return buttonBackground; }
+            set
+            {
+                buttonBackground = value;
+                //OnPropertyChanged(nameof(ButtonBackground));
+            }
+        }
 
         public void RandomWord()
         {
@@ -91,8 +102,6 @@ namespace WpfApp1
             letter = letter.ToLower();
 
 
-
-
             bool isGuessed = false;
 
 
@@ -106,11 +115,14 @@ namespace WpfApp1
                     empty[i] = Word[i];
                     this.word.Text = new string(empty);
                     isGuessed = true;
+                    button.IsEnabled = false;
                 }
+                
             }
 
             if (!isGuessed)
-            {
+            {                
+                button.IsEnabled = false;
                 pic_num++;
                 pic.Visibility = Visibility.Visible;
                 pic.Source = new BitmapImage(new Uri($"C:/Users/bigie/source/repos/HangMan/grafika/{pic_num}.jpg"));
