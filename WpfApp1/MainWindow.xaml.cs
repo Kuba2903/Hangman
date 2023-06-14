@@ -27,7 +27,6 @@ namespace WpfApp1
             RandomWord();
         }
 
-        public int tries { get; set; }
         public string letter { get; set; }
 
         string[] words = { "rhino", "mouse", "horse", "elephant", "giraffe" };
@@ -36,13 +35,12 @@ namespace WpfApp1
 
         char[] empty;
 
-        
+
         public void RandomWord()
         {
             Random rnd = new Random();
             int random = rnd.Next(0, 5);
             Word = words[random];
-
 
             var parts = Word.ToCharArray();
 
@@ -82,15 +80,18 @@ namespace WpfApp1
 
 
         }
-        private int pic_num = 1;
+        private int pic_num = 0;
         private void btnClick(object sender, RoutedEventArgs e)
         {
+            bool is_all_words_guessed = false;
+
+
             Button button = (Button)sender;
             letter = button.Content.ToString();
             letter = letter.ToLower();
 
-           
-            //bool is_all_words_guessed = false;
+
+
 
             bool isGuessed = false;
 
@@ -106,22 +107,65 @@ namespace WpfApp1
                     this.word.Text = new string(empty);
                     isGuessed = true;
                 }
-                else
-                    isGuessed = false;
             }
 
             if (!isGuessed)
             {
-                pic.Source = new BitmapImage(new Uri($"C:/Users/bigie/source/repos/HangMan/grafika/{pic_num}.jpg"));
                 pic_num++;
+                pic.Visibility = Visibility.Visible;
+                pic.Source = new BitmapImage(new Uri($"C:/Users/bigie/source/repos/HangMan/grafika/{pic_num}.jpg"));
             }
 
-            if(pic_num == 5)
+            if (pic_num == 4)
             {
                 this.word.Text = "Game end!";
-                button.IsEnabled = false;
+                DisableAllButtons();
+                again.Visibility = Visibility.Visible;
+            }
+
+            if (!empty.Contains('-'))
+                is_all_words_guessed = true;
+
+            if (is_all_words_guessed)
+            {
+                DisableAllButtons();
+                again.Visibility = Visibility.Visible;
             }
 
         }
+
+        private void DisableAllButtons()
+        {
+            foreach (UIElement element in container.Children)
+            {
+                if (element is Button button)
+                {
+                    button.IsEnabled = false;
+                }
+            }
+            again.IsEnabled = true;
+        }
+
+        private void EnableAllButtons()
+        {
+            foreach (UIElement element in container.Children)
+            {
+                if (element is Button button)
+                {
+                    button.IsEnabled = true;
+                }
+            }
+        }
+
+        private void again_Click(object sender, RoutedEventArgs e)
+        {
+            word.Text = string.Empty;
+            pic_num = 0;
+            RandomWord();
+            EnableAllButtons();
+            pic.Visibility = Visibility.Hidden;
+            again.Visibility = Visibility.Collapsed;
+        }
     }
 }
+
